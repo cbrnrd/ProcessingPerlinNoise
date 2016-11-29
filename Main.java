@@ -1,7 +1,7 @@
 // original code from https://www.youtube.com/watch?v=IKB1hWWedMk
 // this file is written by: Carter Brainerd <https://github.com/thecarterb> 
 
-// PASTE THIS DIRECTLY INTO PROCESSING GITHUB SYNTAX HIGHLITING WON'T COLOR THIS RIGHT
+// !!!!!!!!PASTE THIS DIRECTLY INTO PROCESSING!!!!!!!!!!!!
 
 int cols;      //columns
 int rows;      //rows
