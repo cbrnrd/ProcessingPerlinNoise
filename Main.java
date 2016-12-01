@@ -3,31 +3,64 @@
 
 // !!!!!!!!PASTE THIS DIRECTLY INTO PROCESSING!!!!!!!!!!!!
 
+
+///////////////////GLOBALS
 int cols;      //columns
 int rows;      //rows
 int scl = 20;  //scale
 
-void setup(){
-   size(600,600,P3D); //setup size of dwaring canvas
-    int w = 600; //height
-    int h = 600; //width
-    cols = w /scl;
-    rows = h / scl;
+int w = 2000; //height
+int h = 2000; //width
+
+float flying = 0;
+
+float[][] terrain;
+///////////////////////////
+
+
+void setup(){ //required function!!!
+   size(600,600,P3D); //setup size of drawing canvas
+   cols  = w /scl;
+   rows  = h / scl;
   
+  //2d array for terrain grid
+   terrain = new float[cols][rows];
+   
 }
 
-void draw(){
-  background(0); //set the background
-  
-  for (int y = 0; y < rows; y++){
-    beginShape(TRIANGLE_STRIP); //spawn triangle strip shape
-    for (int x = 0; x < cols; x++){
-      vertex(x * scl, y * scl);        // draw vertices for previously spawned TRIANGLE_SHAPE
-      vertex(x * scl, (y + 1) * scl);  //
+void draw(){         //required function!!!
 
-      //rect(x*scl, y*scl, scl,scl);
-    }
-    endShape();
-  }
+flying -= 0.1;
+float yoff = flying; //y offset
+   
+   //generate random z axis values
+   for (int y = 0; y < rows; y++){
+     float xoff = 0; //x offset
+    for (int x = 0; x < cols; x++){
+      terrain[x][y] = map(noise(xoff,yoff), 0, 1, -150, 150); //noise(x, y) always returns something between 0-1
+      xoff += 0.1;
+      }
+     yoff += 0.1;
+   }
+   
+  background(0); //set the background
+  stroke(255);   //set stroke to be white
+  noFill();      //no fill for the triangle strip
+  
+  //center triangles on screen
+  translate(width/2, height/2 + 50);
+  rotateX(PI/3);
+  translate(-w/2, -h/2);
+  
+  //main generation code
+  for (int y = 0; y < rows - 1; y++){
+    beginShape(TRIANGLE_STRIP);                       //spawn triangle strip shape
+    for (int x = 0; x < cols; x++){
+      vertex(x * scl, y * scl, terrain[x][y]);        // draw vertices for previously spawned TRIANGLE_SHAPE
+      vertex(x * scl, (y + 1) * scl, terrain[x][y + 1]);  // [y + 1] is to cut out clipping if we were to just use [y]
+      
+        }
+    endShape(); //ends production of the shape
+  } //goes back and remakes shape
   
 }
